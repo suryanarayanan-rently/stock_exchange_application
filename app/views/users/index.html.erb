@@ -1,0 +1,69 @@
+<%= form_with model: @user, url: "/user/sign_in" do |form| %>
+<div class="mb-3">
+    <%= form.label :username%>
+    <%= form.text_field :username, class: "form-control", value: @user.username%>
+    <div class="text-danger">
+        <% if @user.errors[:username].any? %>
+            <% @user.errors[:username].each do |error|%>
+                <%= error%>
+            <%end%>
+        <%end%>
+    </div>
+</div>
+<div class="mb-3">
+    <%= form.label :name%>
+    <%= form.text_field :name, class: "form-control"%>
+    <div class="text-danger">
+        <% if @user.errors[:name].any? %>
+            <% @user.errors[:name].each do |error|%>
+                <%= error%>
+            <%end%>
+        <%end%>
+    </div>
+</div>
+<div class="mb-3">
+    <%= form.label :mobile%>
+    <%= form.text_field :mobile, class: "form-control"%>
+    <div class="text-danger">
+        <% if @user.errors[:mobile].any? %>
+            <% @user.errors[:mobile].each do |error|%>
+                <%= error%>
+            <%end%>
+        <%end%>
+    </div>
+</div>
+<div class="mb-3">
+    <%= form.label :email%>
+    <%= form.email_field :email, class: "form-control"%>
+    <div class="text-danger">
+        <% if @user.errors[:email].any? %>
+            <% @user.errors[:email].each do |error|%>
+                <%= error%>
+            <%end%>
+        <%end%>
+    </div>
+</div>
+<div class="mb-3">
+    <%= form.label :password%>
+    <%= form.password_field :password, class: "form-control"%>
+    <div class="text-danger">
+        <% if @user.errors[:password].any? %>
+            <% @user.errors[:password].each do |error|%>
+                <%= error%>
+            <%end%>
+        <%end%>
+    </div>
+</div>
+<div class="mb-3">
+    <%= form.label :password_confirmation%>
+    <%= form.password_field :password_confirmation, class: "form-control"%>
+    <div class="text-danger">
+        <% if @user.errors[:password_confirmation].any? %>
+            <% @user.errors[:password_confirmation].each do |error|%>
+                <%= error%>
+            <%end%>
+        <%end%>
+    </div>
+</div>
+<%= form.submit "Start Investing", class: "btn w-100 btn-primary" %>
+<% end %>

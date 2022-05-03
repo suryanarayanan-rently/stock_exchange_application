@@ -1,0 +1,15 @@
+<div class="d-flex flex-column align-items-center justify-content-center">
+<%= form_with model: @pan_card do |form| %>
+    <div class="mb-3">
+        <%= form.text_field :pan_no, class: "form-control", placeholder: "Enter PAN No"%>
+        <%if @pan_card.errors[:pan_no].any?%>
+            <ul class="text-danger">
+            <%@pan_card.errors[:pan_no].each do |error|%>
+                <li><%="PAN number " + error%></li>
+            <%end%>
+            </ul>
+        <%end%>
+    </div>
+    <%= form.submit "Create My Wallet", class:"btn btn-primary w-100"%>
+<%end%>
+</div>
