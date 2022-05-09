@@ -1,1 +1,4 @@
-<h1> List of Stocks </h1>
+<h1> List of Stocks</h1>
+<% StockOrder.all.each do |stockorder|%>
+<%=stockorder.stock_symbol%> - <%= stockorder.sold_by.name%> - <%= stockorder.price%>
+<%end%>

@@ -13,8 +13,6 @@ class User < ApplicationRecord
     validates :password_confirmation,presence: true, confirmation: true
     
     #Associations
-    # Only one pan card can be hold by an user
-    has_one :pan_card
-    has_one :wallet
+    has_one :pan_card, foreign_key: :username
 
 end

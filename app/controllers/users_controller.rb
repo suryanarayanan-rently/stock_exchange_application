@@ -20,6 +20,8 @@ class UsersController < ApplicationController
         if @user == nil
             render :index 
         end
-    end          
+    end
+    
+    
     
 end
