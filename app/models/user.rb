@@ -13,6 +13,7 @@ class User < ApplicationRecord
     validates :password_confirmation,presence: true, confirmation: true
     
     #Associations
-    has_one :pan_card, foreign_key: :username
+    has_one :pan_card, foreign_key: :username, dependent: :destroy
+    has_one :wallet, foreign_key: :username, primary_key: :username, dependent: :destroy
 
 end

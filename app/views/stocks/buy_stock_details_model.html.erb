@@ -1,0 +1,23 @@
+<div class="modal fade" id="buyStockModal">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"> Buy this Stock? </h5> 
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"> </button>
+        </div>
+        <div class="modal-body">
+            <div id="modalStockSymbol">Symbol: </div>
+            <div id="modalStockName">Name:  </div>
+            <div id="modalStockPrice">Price: </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <%= form_with url:"/stock_orders/buy", action:"post" do |form| %>
+                <%= form.hidden_field :stockOrderId, id: "stockOrderId" %>
+            <%= form.submit "Buy", class: "btn btn-primary" %>
+            <%end%>
+
+        </div>
+        </div>
+    </div>
+</div>

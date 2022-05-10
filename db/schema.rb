@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_09_153859) do
+ActiveRecord::Schema.define(version: 2022_05_10_032912) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -83,8 +83,17 @@ ActiveRecord::Schema.define(version: 2022_05_09_153859) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "wallets", force: :cascade do |t|
+    t.string "username"
+    t.float "balance"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["username"], name: "index_wallets_on_username"
+  end
+
   add_foreign_key "pan_cards", "users", column: "username", primary_key: "username"
   add_foreign_key "stock_orders", "stocks", column: "stock_symbol", primary_key: "symbol"
   add_foreign_key "stock_orders", "users", column: "bought_by", primary_key: "username"
   add_foreign_key "stock_orders", "users", column: "sold_by", primary_key: "username"
+  add_foreign_key "wallets", "users", column: "username", primary_key: "username"
 end
