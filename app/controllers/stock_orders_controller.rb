@@ -10,9 +10,11 @@ class StockOrdersController < ApplicationController
 
     def save_sell_stock_order
         sold_by = current_user.username
-        price = params[:price]
+        units = params[:units]
+        unit_price = params[:unit_price]
         stock_symbol = params[:stock_symbol]
-        @stock_order = StockOrder.new(sold_by: User.find(sold_by),price: price.to_f,stock_symbol: stock_symbol)
+        total_price = units * units_price
+        @stock_order = StockOrder.new(sold_by: User.find(sold_by),total_price: total_price,stock_symbol: stock_symbol,units: units, unit_price: unit_price)
         if @stock_order.save 
             redirect_to "/stocks"
         else

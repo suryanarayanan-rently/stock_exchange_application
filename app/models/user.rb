@@ -16,4 +16,6 @@ class User < ApplicationRecord
     has_one :pan_card, foreign_key: :username, dependent: :destroy
     has_one :wallet, foreign_key: :username, primary_key: :username, dependent: :destroy
 
+    has_many :stock_holding, foreign_key: :username
+    
 end

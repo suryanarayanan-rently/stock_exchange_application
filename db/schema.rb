@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_10_032912) do
+ActiveRecord::Schema.define(version: 2022_05_11_105820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,24 +53,39 @@ ActiveRecord::Schema.define(version: 2022_05_10_032912) do
     t.index ["username"], name: "index_pan_cards_on_username"
   end
 
+  create_table "stock_holdings", force: :cascade do |t|
+    t.string "username"
+    t.string "stock_symbol"
+    t.string "no_of_shares"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["username", "stock_symbol"], name: "index_stock_holdings_on_username_and_stock_symbol", unique: true
+  end
+
   create_table "stock_orders", force: :cascade do |t|
     t.string "sold_by"
     t.string "bought_by"
     t.string "stock_symbol"
     t.datetime "sold_at"
-    t.float "price"
+    t.float "unit_price"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "no_of_shares"
+    t.boolean "order_status"
+    t.float "total_price"
   end
 
   create_table "stocks", primary_key: "symbol", id: :string, force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "face_value"
+    t.integer "no_of_shares"
+    t.float "current_price"
+    t.string "created_by"
   end
 
   create_table "users", primary_key: "username", id: :string, force: :cascade do |t|
-    t.string "password"
     t.string "name"
     t.string "mobile"
     t.datetime "created_at", precision: 6, null: false
@@ -92,8 +107,11 @@ ActiveRecord::Schema.define(version: 2022_05_10_032912) do
   end
 
   add_foreign_key "pan_cards", "users", column: "username", primary_key: "username"
+  add_foreign_key "stock_holdings", "stocks", column: "stock_symbol", primary_key: "symbol"
+  add_foreign_key "stock_holdings", "users", column: "username", primary_key: "username"
   add_foreign_key "stock_orders", "stocks", column: "stock_symbol", primary_key: "symbol"
   add_foreign_key "stock_orders", "users", column: "bought_by", primary_key: "username"
   add_foreign_key "stock_orders", "users", column: "sold_by", primary_key: "username"
+  add_foreign_key "stocks", "admin_users", column: "created_by", primary_key: "email"
   add_foreign_key "wallets", "users", column: "username", primary_key: "username"
 end
