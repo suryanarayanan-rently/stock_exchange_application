@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_11_105820) do
+ActiveRecord::Schema.define(version: 2022_05_12_060653) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,7 +59,6 @@ ActiveRecord::Schema.define(version: 2022_05_11_105820) do
     t.string "no_of_shares"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["username", "stock_symbol"], name: "index_stock_holdings_on_username_and_stock_symbol", unique: true
   end
 
   create_table "stock_orders", force: :cascade do |t|
@@ -71,7 +70,7 @@ ActiveRecord::Schema.define(version: 2022_05_11_105820) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.float "no_of_shares"
-    t.boolean "order_status"
+    t.boolean "sold"
     t.float "total_price"
   end
 
@@ -106,12 +105,12 @@ ActiveRecord::Schema.define(version: 2022_05_11_105820) do
     t.index ["username"], name: "index_wallets_on_username"
   end
 
-  add_foreign_key "pan_cards", "users", column: "username", primary_key: "username"
-  add_foreign_key "stock_holdings", "stocks", column: "stock_symbol", primary_key: "symbol"
-  add_foreign_key "stock_holdings", "users", column: "username", primary_key: "username"
-  add_foreign_key "stock_orders", "stocks", column: "stock_symbol", primary_key: "symbol"
-  add_foreign_key "stock_orders", "users", column: "bought_by", primary_key: "username"
-  add_foreign_key "stock_orders", "users", column: "sold_by", primary_key: "username"
-  add_foreign_key "stocks", "admin_users", column: "created_by", primary_key: "email"
-  add_foreign_key "wallets", "users", column: "username", primary_key: "username"
+  add_foreign_key "pan_cards", "users", column: "username", primary_key: "username", on_delete: :cascade
+  add_foreign_key "stock_holdings", "stocks", column: "stock_symbol", primary_key: "symbol", on_delete: :cascade
+  add_foreign_key "stock_holdings", "users", column: "username", primary_key: "username", on_delete: :cascade
+  add_foreign_key "stock_orders", "stocks", column: "stock_symbol", primary_key: "symbol", on_delete: :cascade
+  add_foreign_key "stock_orders", "users", column: "bought_by", primary_key: "username", on_delete: :cascade
+  add_foreign_key "stock_orders", "users", column: "sold_by", primary_key: "username", on_delete: :cascade
+  add_foreign_key "stocks", "admin_users", column: "created_by", primary_key: "email", on_delete: :cascade
+  add_foreign_key "wallets", "users", column: "username", primary_key: "username", on_delete: :cascade
 end

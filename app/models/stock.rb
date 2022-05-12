@@ -12,7 +12,7 @@ class CallbackActions
 end
 
 class Stock < ApplicationRecord
-    has_many :stock_order, primary_key: :symbol, foreign_key: :stock_symbol
+    has_many :stock_order, primary_key: :symbol, foreign_key: :stock_symbol, dependent: :destroy
     has_many :stock_holding, primary_key: :symbol, foreign_key: :stock_symbol, dependent: :destroy
     belongs_to :admin_user, foreign_key: :created_by, primary_key: "email"
     after_save CallbackActions.new

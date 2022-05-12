@@ -23,10 +23,13 @@
         </div>
         
          <%if user_signed_in? %>
-            <div class="navbar-nav nav-item text-light me-5">
+            <div class="navbar-nav nav-item text-light me-3">
               <i class="bi bi-wallet text-light"></i> &nbsp;<%= User.find(current_user.username).wallet&.balance%>
             </div>
-            <div class="navbar-nav nav-item text-light me-5">
+            <div class="navbar-nav nav-item text-light me-3">
+              <a class="nav-link" href=<%= url_for(action: 'list_stocks',controller:"stocks")%>>Buy Stock</a>
+            </div>
+            <div class="navbar-nav nav-item text-light me-3">
               <a class="nav-link" href=<%= url_for(action: 'show_sell_stock_form',controller:"stock_orders")%>>Sell Stock</a>
             </div>
           <%end%>
@@ -49,8 +52,20 @@
       </button>
       </div>
     </nav>
-    <p class="notice"><%= notice %></p>
-       <p class="alert"><%= alert %></p>
+    <div class="mb-5">
+      <% if notice%>
+        <div class="container mt-2 alert alert-success alert-dismissible fade show">
+          <%= notice %>
+          <button type="button" class="btn-close" data-bs-dismiss="success" arial-label="Close"></button>
+        </div>
+      <%end%>
+      <% if alert%>
+        <div class="container mt-2 alert alert-danger alert-dismissible fade show">
+          <%= alert %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" arial-label="Close"></button>
+        </div>
+      <%end%>
+  </div>
     <%= yield %>
   </body>
 </html>

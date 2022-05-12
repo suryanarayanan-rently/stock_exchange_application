@@ -5,7 +5,18 @@ ActiveAdmin.register StockOrder do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  permit_params :sold_by, :bought_by, :stock_symbol, :unit_price, :no_of_shares, :order_status
+  permit_params :sold_by, :bought_by, :stock_symbol, :unit_price, :no_of_shares, :sold
+  
+  form do |f|
+    f.input "sold_by" do
+      f.has_many :user,
+        new_record: "Sold By"
+    end
+    f.inputs  :bought_by, :stock_symbol, :unit_price, :no_of_shares, :sold
+    f.submit
+  
+  end
+
   
   #
   # or

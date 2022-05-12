@@ -1,5 +1,5 @@
 class PanCardController < ApplicationController
-    before_action :require_login, :only=>[:index,:save_pan_card]
+    before_action :require_login
     def index
         @user = User.find(current_user.username)
         if @user.pan_card != nil
