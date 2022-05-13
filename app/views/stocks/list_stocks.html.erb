@@ -17,13 +17,14 @@
             <tr>
                 <td id="<%=ss%>Symbol"><%= sellorder.stock_symbol %></td>
                 <td id="<%=ss%>Name"><%= sellorder.stock.name %></td>
-                <td id="<%=ss%>Price"><%= sellorder.price %></td>
+                <td id="<%=ss%>Price"><%= sellorder.total_price %></td>
                 <td>
                     <button type="button" class="btn btn-primary" id="<%=ss%>" data-bs-toggle="modal" data-bs-target="#buyStockModal">Buy</button>
                 </td>
             </tr>
         <%end%>
     </tbody>
+</table> 
+    <%= paginate @sellorders%>
 
-</table>
 </div>

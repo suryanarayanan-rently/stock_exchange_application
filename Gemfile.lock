@@ -268,7 +268,9 @@ DEPENDENCIES
   byebug
   capybara (>= 3.26)
   devise
+  has_scope
   jbuilder (~> 2.7)
+  kaminari
   listen (~> 3.3)
   pg
   puma (~> 5.0)

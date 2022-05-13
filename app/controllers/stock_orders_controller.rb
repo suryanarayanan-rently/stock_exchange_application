@@ -33,12 +33,12 @@ class StockOrdersController < ApplicationController
         buyer = User.find(current_user.username)
         stock_order = StockOrder.find(params["stockOrderId"])
         seller = User.find(stock_order.sold_by.username)
-        if stock_order.price > buyer.wallet.balance
+        if stock_order.total_price > buyer.wallet.balance
             redirect_to "/stocks", alert:"You don't have enough money in wallet."
         else
-            buyer.wallet.update(balance: buyer.wallet.balance - stock_order.price)
-            seller.wallet.update(balance: seller.wallet.balance + stock_order.price)
-            stock_order.update(bought_by: buyer.username,sold_at: DateTime.now)
+            buyer.wallet.update(balance: buyer.wallet.balance - stock_order.total_price)
+            seller.wallet.update(balance: seller.wallet.balance + stock_order.total_price)
+            stock_order.update(bought_by: buyer,sold:true,sold_at: DateTime.now)
             redirect_to "/stocks", alert:"Stocck bought successfully"
         end
     end

@@ -4,7 +4,8 @@ class StocksController < ApplicationController
 
     def list_stocks
         @user = User.find(current_user.username)
-        @sellorders = StockOrder.where(bought_by:nil).and(StockOrder.where.not(sold_by:@user.username))  
+        @sellorders = StockOrder.all.page params[:page]
+        puts "Sell Orders:#{@sellorders.limit_value}"
     end
 
     def show_sell_stock_form
