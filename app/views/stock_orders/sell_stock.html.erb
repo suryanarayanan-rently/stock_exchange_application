@@ -1,39 +1,39 @@
 
 <div class="container">
-<div class="row" >
-<div class="col-lg-5 offset-lg-3 col-sm-12 col-md-12" style="border: 1px solid black;border-radius:10px;">
-    <h3 class="text-center mt-3">Sell My Stock</h3>
-<%= form_with model: @stock_orders, url:"/stock_orders/sell" do |form|%>
-    <div class="mb-3">
-        <%= form.label :stock_symbol %>
-        <%= form.collection_select :stock_symbol, Stock.all, :symbol, :name,{},{:class => "form-select"}%>
-    </div>
-    <div class="mb-3">
-        <%= form.label :unit_price%>
-        <%= form.number_field :unit_price, class: "form-control"%>
-        <div>
-            <%if @stock_order.errors[:unit_price].any?%>
-                <%@stock_order.errors[:unit_price].each do |error|%>
-                    <%= error %>
-                <%end%>
+    <div class="row" >
+        <div class="col-lg-5 offset-lg-3 col-sm-12 col-md-12" style="border: 1px solid black;border-radius:10px;">
+            <h3 class="text-center mt-3">Sell My Stock</h3>
+            <%= form_with model: @stock_orders, url:"/stock_order",method: "post" do |form|%>
+                <div class="mb-3">
+                    <%= form.label :stock_symbol %>
+                    <%= form.collection_select :stock_symbol, Stock.all, :symbol, :name,{},{:class => "form-select"}%>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :unit_price%>
+                    <%= form.number_field :unit_price, class: "form-control"%>
+                    <div>
+                        <%if @stock_order.errors[:unit_price].any?%>
+                            <%@stock_order.errors[:unit_price].each do |error|%>
+                                <%= error %>
+                            <%end%>
+                        <%end%>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :no_of_shares%>
+                    <%= form.number_field :no_of_shares, class: "form-control"%>
+                    <div>
+                        <%if @stock_order.errors[:no_of_shares].any?%>
+                            <%@stock_order.errors[:no_of_shares].each do |error|%>
+                                <%= error %>
+                            <%end%>
+                        <%end%>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <%= form.submit "Sell My Holdings", class: "btn btn-primary btn-block w-100"%>
+                </div>
             <%end%>
         </div>
     </div>
-    <div class="mb-3">
-        <%= form.label :price%>
-        <%= form.number_field :no_of_shares, class: "form-control"%>
-        <div>
-            <%if @stock_order.errors[:no_of_shares].any?%>
-                <%@stock_order.errors[:no_of_shares].each do |error|%>
-                    <%= error %>
-                <%end%>
-            <%end%>
-        </div>
-    </div>
-    <div class="mb-3">
-        <%= form.submit "Sell My Holdings", class: "btn btn-primary btn-block w-100"%>
-    </div>
-
-<%end%>
-</div>
 </div>

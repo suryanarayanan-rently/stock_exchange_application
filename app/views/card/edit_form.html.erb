@@ -1,0 +1,74 @@
+<h1> Edit form</h1>
+
+<%= form_with model: @card, url: "/card/edit/#{@card.id}", method:"put" do |form| %>
+<div class="mb-3">
+    <%= form.label :card_holder_name%>
+    <%= form.text_field :card_holder_name, class: "form-control"%>
+    <div class="text-danger">
+        <% if @card.errors[:card_holder_name].any? %>
+            <ul>
+            <% @card.errors[:card_holder_name].each do |error|%>
+                <li><%= "Card Holder Name " + error%> </li>
+            <%end%>
+            </ul>
+        <%end%>
+    </div>
+</div>
+<div class="mb-3">
+    <%= form.label :card_number%>
+    <%= form.number_field :card_number, class: "form-control"%>
+    <div class="text-danger">
+        <% if @card.errors[:card_number].any? %>
+            <ul>
+            <% @card.errors[:card_number].each do |error|%>
+                <li><%= "Card Number " + error%></li>
+            <%end%>
+            </ul>
+        <%end%>
+    </div>
+</div>
+<div class="mb-3">
+    <%= form.label :expiry%>
+    <%= form.date_field :expiry, class: "form-control"%>
+    <div class="text-danger">
+        <% if @card.errors[:expiry].any? %>
+        <ul>
+            <% @card.errors[:expiry].each do |error|%>
+               <li> <%=  error%></li>
+            <%end%>
+        </ul>
+        <%end%>
+    </div>
+</div>
+
+<div class="mb-3">
+    <%= form.label :cvv%>
+    <%= form.password_field :cvv, class: "form-control"%>
+    <div class="text-danger">
+        <% if @card.errors[:cvv].any? %>
+            <ul>
+            <% @card.errors[:cvv].each do |error|%>
+                <li><%= "CVV " + error%></li>
+            <%end%>
+            <ul>
+        <%end%>
+    </div>
+</div>
+
+<div class="mb-3">
+    <%= form.fields_for :user do |user_form|%>
+        <%= user_form.label :password%>
+        <%= user_form.password_field :password, class: "form-control"%>
+        <div class="text-danger">
+            <% if @card.errors[:user_password].any? %>
+                <ul>
+                    <% @card.errors[:user_password].each do |error|%>
+                        <li><%= error%></li>
+                    <%end%>
+                </ul>
+            <%end%>
+        </div>
+    <%end%>
+</div>
+<%= form.submit "Edit Card", class: "btn w-100 btn-primary" %>
+<% end %>

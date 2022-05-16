@@ -8,4 +8,6 @@
 puts "Started Seeding"
 AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
 User.create!(username:"admin@example.com",email: 'admin@example.comple', password:"password",password_confirmation:"password",name: "Admin", mobile:"8428169669")
+Wallet.create!(username:"admin@example.com",balance:0.00)
+
 puts "seeded"

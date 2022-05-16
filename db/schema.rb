@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_13_074618) do
+ActiveRecord::Schema.define(version: 2022_05_15_130409) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,9 +41,60 @@ ActiveRecord::Schema.define(version: 2022_05_13_074618) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
+  create_table "cards", force: :cascade do |t|
+    t.string "card_number"
+    t.string "card_holder_name"
+    t.integer "cvv"
+    t.date "expiry"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "drop_pan_cards", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "oauth_access_grants", force: :cascade do |t|
+    t.string "resource_owner_id", null: false
+    t.bigint "application_id", null: false
+    t.string "token", null: false
+    t.integer "expires_in", null: false
+    t.text "redirect_uri", null: false
+    t.datetime "created_at", null: false
+    t.datetime "revoked_at"
+    t.string "scopes", default: "", null: false
+    t.index ["application_id"], name: "index_oauth_access_grants_on_application_id"
+    t.index ["resource_owner_id"], name: "index_oauth_access_grants_on_resource_owner_id"
+    t.index ["token"], name: "index_oauth_access_grants_on_token", unique: true
+  end
+
+  create_table "oauth_access_tokens", force: :cascade do |t|
+    t.string "resource_owner_id"
+    t.bigint "application_id", null: false
+    t.string "token", null: false
+    t.string "refresh_token"
+    t.integer "expires_in"
+    t.datetime "revoked_at"
+    t.datetime "created_at", null: false
+    t.string "scopes"
+    t.string "previous_refresh_token", default: "", null: false
+    t.index ["application_id"], name: "index_oauth_access_tokens_on_application_id"
+    t.index ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true
+    t.index ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id"
+    t.index ["token"], name: "index_oauth_access_tokens_on_token", unique: true
+  end
+
+  create_table "oauth_applications", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "uid", null: false
+    t.string "secret", null: false
+    t.text "redirect_uri"
+    t.string "scopes", default: "", null: false
+    t.boolean "confidential", default: true, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
   create_table "pan_cards", primary_key: "pan_no", id: :string, force: :cascade do |t|
@@ -51,6 +102,15 @@ ActiveRecord::Schema.define(version: 2022_05_13_074618) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "username"
     t.index ["username"], name: "index_pan_cards_on_username"
+  end
+
+  create_table "price_movements", force: :cascade do |t|
+    t.string "stock_symbol"
+    t.float "price"
+    t.datetime "time"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["stock_symbol"], name: "index_price_movements_on_stock_symbol"
   end
 
   create_table "stock_holdings", force: :cascade do |t|
@@ -85,6 +145,15 @@ ActiveRecord::Schema.define(version: 2022_05_13_074618) do
     t.string "created_by"
   end
 
+  create_table "user_cards", force: :cascade do |t|
+    t.string "username"
+    t.bigint "card_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["card_id"], name: "index_user_cards_on_card_id"
+    t.index ["username", "card_id"], name: "index_user_cards_on_username_and_card_id", unique: true
+  end
+
   create_table "users", primary_key: "username", id: :string, force: :cascade do |t|
     t.string "name"
     t.string "mobile"
@@ -106,12 +175,19 @@ ActiveRecord::Schema.define(version: 2022_05_13_074618) do
     t.index ["username"], name: "index_wallets_on_username"
   end
 
+  add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
+  add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id", primary_key: "username"
+  add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
+  add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id", primary_key: "username"
   add_foreign_key "pan_cards", "users", column: "username", primary_key: "username", on_delete: :cascade
+  add_foreign_key "price_movements", "stocks", column: "stock_symbol", primary_key: "symbol", on_delete: :cascade
   add_foreign_key "stock_holdings", "stocks", column: "stock_symbol", primary_key: "symbol", on_delete: :cascade
   add_foreign_key "stock_holdings", "users", column: "username", primary_key: "username", on_delete: :cascade
   add_foreign_key "stock_orders", "stocks", column: "stock_symbol", primary_key: "symbol", on_delete: :cascade
   add_foreign_key "stock_orders", "users", column: "bought_by", primary_key: "username", on_delete: :cascade
   add_foreign_key "stock_orders", "users", column: "sold_by", primary_key: "username", on_delete: :cascade
   add_foreign_key "stocks", "admin_users", column: "created_by", primary_key: "email", on_delete: :cascade
+  add_foreign_key "user_cards", "cards"
+  add_foreign_key "user_cards", "users", column: "username", primary_key: "username", on_delete: :cascade
   add_foreign_key "wallets", "users", column: "username", primary_key: "username", on_delete: :cascade
 end

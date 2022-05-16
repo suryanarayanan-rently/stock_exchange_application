@@ -17,5 +17,11 @@ class User < ApplicationRecord
     has_one :wallet, foreign_key: :username, primary_key: :username, dependent: :destroy
 
     has_many :stock_holding, foreign_key: :username, dependent: :destroy
-    
+    has_many :user_cards, foreign_key: :username
+    has_many :cards, through: :user_cards, foreign_key: :username,  dependent: :destroy    
+
+    def self.authenticate(username,password)
+      user = User.find_for_authentication(username: username)
+      user&.valid_password?(password) ? user:nil
+    end
 end

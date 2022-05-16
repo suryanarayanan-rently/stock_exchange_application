@@ -1,0 +1,64 @@
+<div class="container">
+    <% if @cards.count == 0%>
+        <h1> You don't have any cards to add money. Please Add a card</h1>
+    <%else%>
+        <div class="accordion" id="cardAccordion">
+            <% @cards.each do |card| %>
+                <div class="accordion-item">
+                    <div class="accordion-header" id="card<%=card.id%>">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%=card.id%>"> 
+                            <div class="card-body d-flex justify-content-around">
+                                <div>
+                                    <strong>Card Number</strong><br />
+                                    <%= card.card_number%>
+                                </div>
+                                <div>
+                                    <strong>Name</strong><br />
+                                    <%= card.card_holder_name%>
+                                </div>
+                                <div>
+                                    <strong>Expiry</strong> <br />
+                                    <%= card.expiry%>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="accordion-collapse collapse" id="collapse<%=card.id%>" data-bs-parent="#cardAccordion">
+                        <div class="accordion-body" >
+                            <%= form_with model:@wallet, method: :PUT, url:"/wallet/add_money", class: "row row-cols-4" do |form|%>
+                                <span>
+                                    <span>
+                                        <%= form.number_field :amount, class:"form-control", placeholder: "Amount"%>
+                                    </span>
+                                    <span class="text-danger">
+                                        <% if @wallet.errors[:amount].any?%>
+                                            <% @wallet.errors[:amount].each do |error| %>
+                                                <%= error%>
+                                            <%end%>
+                                        <%end%>
+                                    </span>
+                                </span>
+                                <span>
+                                    <span>
+                                        <%= form.password_field :cvv, class:"form-control", placeholder: "CVV"%>
+                                    </span>
+                                    <span class="text-danger">
+                                        <% if @wallet.errors[:cvv].any?%>
+                                            <% @wallet.errors[:cvv].each do |error| %>
+                                                <%= error%>
+                                            <%end%>
+                                        <%end%>
+                                    </span>
+                                </span>
+                                <%= form.hidden_field :card_id, value: "#{card.id}" %>
+                                <span>
+                                    <%= form.submit "Add Balance", class:"btn btn-primary"%>
+                                </span>
+                            <%end%>
+                        </div>
+                    </div>
+                </div>
+            <%end%>
+        </div>
+    <%end%>
+</div>

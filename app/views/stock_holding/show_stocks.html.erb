@@ -1,0 +1,24 @@
+<div class="container">
+    <%if @stock_holdings.count == 0%>
+        <h1> You don't have any stocks in your portfolio </h1>
+    <%else%>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Symbol</th>
+                    <th>No of shares</th>
+                    <th>Shares on Hold</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @stock_holdings.each do |stock_holding|%>
+                    <tr>
+                        <td><%= stock_holding.stock_symbol%></td> 
+                        <td><%= stock_holding.no_of_shares%></td> 
+                        <td><%= stock_holding.stocks_on_hold%></td>
+                    </tr>
+                <%end%>
+            </tbody>
+        </table>
+    <%end%>
+</div>
