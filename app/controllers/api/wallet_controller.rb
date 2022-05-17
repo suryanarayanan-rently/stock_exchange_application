@@ -1,7 +1,7 @@
 module Api
     class WalletController < Api::ApplicationController
 
-        def add_money_to_wallet
+        def add_money_to_wallet 
             @wallet = Wallet.new
             current_user
             @user = User.find(@current_user.username)
@@ -22,14 +22,20 @@ module Api
             cvv = cvv.to_i
 
             card_id = params[:card_id]
-            card = @user.cards.find(card_id)
-            if card.cvv != cvv
-                @wallet.errors[:cvv] << "Invalid CVV"
-                return render json: {errors:@wallet.errors}, status: 400
-            else
-                @user.wallet.update(balance:@user.wallet.balance + amount)
-                return render json: {msg:"success"}, status:200
+            begin
+                card = @user.cards.find(card_id)
+                if card.cvv != cvv
+                    @wallet.errors[:cvv] << "Invalid CVV"
+                    return render json: {errors:@wallet.errors}, status: 400
+                else
+                    @user.wallet.update(balance:@user.wallet.balance + amount)
+                    return render json: {msg:"success"}, status:200
+                end    
+            rescue ActiveRecord::RecordNotFound => exception
+                print exception 
+                return render json: {error: "Card Not Found"}
             end
+            
         end              
     end
 end

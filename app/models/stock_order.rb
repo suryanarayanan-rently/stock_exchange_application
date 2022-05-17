@@ -12,7 +12,7 @@ class StockOrder < ApplicationRecord
         
     after_create :update_stock_holdings_on_create
     after_update :update_stock_holdings_on_update
-    after_destroy :update_stock_holdings_on_delete
+    after_destroy :update_stock_holdings_on_destroy
 
     paginates_per 2
 
@@ -69,11 +69,13 @@ class StockOrder < ApplicationRecord
         end
     end
 
-    def update_stock_holdings_on_delete
+    def update_stock_holdings_on_destroy
         stock_holding = StockHolding.find_by(username:self.sold_by.username,stock_symbol:self.stock_symbol)        
         if !self.sold
             stock_holding.update(stocks_on_hold: stock_holding.stocks_on_hold - self.no_of_shares)
         end
 
     end
+
+    
 end
