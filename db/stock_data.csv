@@ -1,0 +1,5 @@
+symbol,name,no_of_shares,face_value,current_price
+AMZ,Amazon,50,10,1000
+MS,Microsoft,100,1,100
+INFY,Infosys,10,10.5,22.87
+TSLA,Tesla,100,5,50
