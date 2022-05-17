@@ -44,7 +44,7 @@ Rails.application.routes.draw do
     
     put "/wallet/add_money", to:"wallet#add_money_to_wallet"
 
-    post "/stocks/split/:id", to:"stock#split_stock"
+    post "/stocks/split/:stock_symbol", to:"stock#split_stock"
 
   end
 end
