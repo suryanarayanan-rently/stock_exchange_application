@@ -1,14 +1,17 @@
 class StockOrder < ApplicationRecord
     
-    include PgSearch 
+    include PgSearch::Model
+
+    @sold_updated = false
+    attribute :created_at, default: -> {Time.now.utc}
+    attribute :sold, default: -> {false}
+
     pg_search_scope :kinda_spelled_like, against: :stock_symbol, using: {
         :trigram =>  {
             threshold:0.1
         }
     }
-    @sold_updated = false
-    attribute :created_at, default: -> {Time.now.utc}
-    attribute :sold, default: -> {false}
+    
 
     validates :unit_price, presence: true, numericality: {:greater_than_or_equal_to=> 1.00}
     validates :sold_by, presence: true
@@ -19,7 +22,7 @@ class StockOrder < ApplicationRecord
     
     belongs_to :sold_by, class_name:"User", foreign_key: :sold_by
     belongs_to :bought_by, class_name:"User", foreign_key: :bought_by, required: false
-    belongs_to :stock, foreign_key: :stock_symbol
+    belongs_to :stock, foreign_key: :stock_symbol, primary_key: :symbol
     
         
     after_create :update_stock_holdings_on_create
@@ -37,8 +40,7 @@ class StockOrder < ApplicationRecord
         if stock_holding == nil 
             errors.add(:stock_symbol, "You can sell only the stocks you hold")
         else
-            errors.add(:no_of_shares, "You can't sell more than you hold") if no_of_shares.blank? or no_of_shares > stock_holding.no_of_shares
-                
+            errors.add(:no_of_shares, "You can't sell more than you hold") if no_of_shares.blank? or no_of_shares > stock_holding.no_of_shares            
             errors.add(:stocks_on_hold, "All your stocks are on hold or you don't have enough stocks") if stock_holding.stocks_on_hold+no_of_shares > stock_holding.no_of_shares
             
         end

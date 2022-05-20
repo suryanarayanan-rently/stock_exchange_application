@@ -12,10 +12,12 @@ class Card < ApplicationRecord
     
 
     def validate_expiry_is_not_in_past_or_present
-        if self.expiry.past?
-            errors[:expiry]<<"Card Already Expired"
+        if expiry.nil?
+            errors.add(:expiry,"Expiry cannot be blank")
+        elsif self.expiry.past?
+            errors.add(:expiry,"Card Already Expired")
         elsif self.expiry.today?
-            errors[:expiry]<<"Card Expired today"
+            errors.add(:expiry,"Card Expired today")
         end
     end
 

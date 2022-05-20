@@ -3,6 +3,13 @@ class CallbackActions
 end
 
 class Stock < ApplicationRecord
+
+    validates :symbol, presence: true
+    validates :name, presence: true, length: {minimum:3}
+    validates :no_of_shares, presence: true, numericality: {only_integer: true, greater_than:  1} 
+    validates :face_value, presence: true, numericality: {greater_than_or_equal_to: 1.00}
+    validates :current_price, presence: true,numericality: {greater_than_or_equal_to: 1.00}
+
     has_many :stock_order, primary_key: :symbol, foreign_key: :stock_symbol, dependent: :destroy
     has_many :stock_holding, primary_key: :symbol, foreign_key: :stock_symbol
     has_many :price_movements, primary_key: :symbol, foreign_key: :stock_symbol, dependent: :destroy

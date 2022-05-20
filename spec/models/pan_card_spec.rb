@@ -1,5 +1,5 @@
 require "rails_helper"
-RSpec.describe PanCard, :type => :pan_card do
+RSpec.describe PanCard, :type => :model do
     
 
     before(:all) do
@@ -26,9 +26,9 @@ RSpec.describe PanCard, :type => :pan_card do
         expect(subject).to_not be_valid
     end
 
-    # it "should belong to a user" do
-    #     expect(should belong_to(:user))
-    # end
+    it "should belong to a user" do
+        expect(should belong_to(:user))
+    end
 
     after(:all) do
         @user.destroy
