@@ -11,9 +11,16 @@ name.innerHTML = "Name: "+document.getElementById(`${id}Name`).innerHTML
 price.innerHTML = "Price: "+document.getElementById(`${id}Price`).innerHTML
 document.getElementById("stockOrderId").value = e.target.id
 }
-window.onload = () => {
+let modal = document.getElementById("buyStockModal");
+
+addListener =  () => {
     let buttons = document.querySelectorAll("td > button");
     buttons.forEach((button) => {
         button.addEventListener("click",onClickTableBuy)
     })
 }
+
+
+window.onload = () => {addListener()}
+
+(addListener)()

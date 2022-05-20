@@ -1,7 +1,7 @@
 <div class="container">
 <% @cards.each do |card| %>
-    <div class="card">
-        <div class="card-body d-flex justify-content-around">
+    <div class="card mb-3">
+        <div class="card-body  d-flex justify-content-around">
             <div>
                 <strong>Card Number</strong><br />
                 <%= card.card_number%>
@@ -15,11 +15,11 @@
                 <%= card.expiry%>
             </div>
             <div>
-                <a class="btn btn-primary" data-method="delete" href="/card/delete/<%=card.id %>" " ><i class="bi bi-trash"></i></a>
-                <a class="btn btn-info" href="/card/edit/<%=card.id %>"><i class="bi bi-pencil-fill"></i></a>
+                <a class="btn btn-danger" data-method="delete" href="/card/delete/<%=card.id %>" ><i class="bi bi-trash"></i></a>
+                <a class="btn btn-warning" href="/card/edit/<%=card.id %>"><i class="bi bi-pencil-fill"></i></a>
             </div>
         </div>
     </div>
-    
 <%end%>
+<%= paginate @cards%>
 </div>

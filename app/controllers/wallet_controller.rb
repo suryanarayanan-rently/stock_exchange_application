@@ -15,10 +15,12 @@ class WalletController < ApplicationController
         amount = params[:wallet][:amount]
 
         if amount.blank?
+            flash.alert = "Money cannot be added to wallet"
             @wallet.errors[:amount] <<  "Amount cannot be blank"
             return render :show_available_cards 
         end
         if cvv.blank?
+            flash.alert = "Money cannot be added to wallet"
             @wallet.errors[:cvv] << "CVV cannot be blank"
             return render :show_available_cards
         end 
@@ -29,6 +31,7 @@ class WalletController < ApplicationController
         card_id = params[:wallet][:card_id]
         card = @user.cards.find(card_id)
         if card.cvv != cvv
+            flash.alert = "Money cannot be added to wallet"
             @wallet.errors[:cvv] << "Invalid CVV"
             render :show_available_cards
         else

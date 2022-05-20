@@ -12,5 +12,8 @@ User.create!(username:"admin@example.com",email: 'admin@example.comple', passwor
 Wallet.create!(username:"admin@example.com",balance:0.00)
 puts "User data seeding completed"
 seed_stock_data
-Doorkeeper::Application.create(name:"Postman",redirect_uri:"",scopes:"")
+
+    Doorkeeper::Application.create(name:"Postman",redirect_uri:"",scopes:"")
 puts "seeding completed"
+
+

@@ -1,7 +1,7 @@
 require_relative "utils.rb"
 class CardController < ApplicationController
 
-    before_action :require_login
+    before_action :require_login, :check_pan_card
     def index
         @card = Card.new
     end
@@ -28,7 +28,7 @@ class CardController < ApplicationController
 
     def show_user_cards
         @user = User.find(current_user.username)
-        @cards = @user.cards
+        @cards = @user.cards.page params[:page]
     end
 
 
@@ -74,11 +74,7 @@ class CardController < ApplicationController
         return redirect_to "/cards"
     end
 
-    def show_user_cards 
-        @user = User.find(params[:username])
-        @cards = @user.cards 
-        render json: @cards, status: 200
-    end
+    
 
     
 end

@@ -46,5 +46,9 @@ Rails.application.routes.draw do
 
     post "/stocks/split/:stock_symbol", to:"stock#split_stock"
 
+    post "/stock_order/sell", to:"stock_order#save_sell_stock_order"
+    post "/stock_order/buy", to:"stock_order#buy_stock"
+
+
   end
 end

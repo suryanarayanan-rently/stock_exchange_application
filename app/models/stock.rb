@@ -8,7 +8,7 @@ class Stock < ApplicationRecord
     has_many :price_movements, primary_key: :symbol, foreign_key: :stock_symbol, dependent: :destroy
     belongs_to :admin_user, foreign_key: :created_by, primary_key: "email"
     
-    after_save :update_or_create_stock_holding
+    after_create :update_or_create_stock_holding
 
     before_destroy :after_destroy_update_wallet
 
@@ -26,7 +26,7 @@ class Stock < ApplicationRecord
         stock_holding_users = StockHolding.where(stock_symbol:self).to_a.map {|sh| sh.username}
         puts "Stock holding users: #{stock_holding_users}"
         # Wallet.where(username:stock_holding_users).update_all(["balance = balance + (select no_of_shares FROM stock_holdings WHERE stock_symbol = ? AND stock_holdings.username = username) * ?",self.symbol,self.current_price])
-        sql = "UPDATE wallets SET  balance = balance + (select no_of_shares FROM stock_holdings WHERE stock_symbol = '#{self.symbol}' AND stock_holdings.username = wallets.username) + (select current_price from stocks where symbol='#{self.symbol}') WHERE wallets.username IN (SELECT username FROM stock_holdings WHERE stock_symbol = '#{self.symbol}');"
+        sql = "UPDATE wallets SET  balance = balance + (select no_of_shares FROM stock_holdings WHERE stock_symbol = '#{self.symbol}' AND stock_holdings.username = wallets.username) * (select current_price from stocks where symbol='#{self.symbol}') WHERE wallets.username IN (SELECT username FROM stock_holdings WHERE stock_symbol = '#{self.symbol}');"
         results = ActiveRecord::Base.connection.execute(sql)
 
         if results.present?

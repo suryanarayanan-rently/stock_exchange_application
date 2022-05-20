@@ -12,8 +12,13 @@ class StockOrdersController < ApplicationController
 
     def list_stocks
         @user = User.find(current_user.username)
-        @sellorders = StockOrder.where(sold: false).and(StockOrder.where.not(sold_by:@user)).page params[:page]
-        puts "Sell Orders:#{@sellorders.limit_value}"
+        if params[:query].blank? != true and params[:query].nil? != true
+
+            @sellorders = StockOrder.kinda_spelled_like(params[:query]).where(sold: false).and(StockOrder.where.not(sold_by:@user)).page(params[:page]) 
+        else
+            @sellorders = StockOrder.where(sold: false).and(StockOrder.where.not(sold_by:@user)).page(params[:page])
+        end
+            puts "Sell Orders:#{@sellorders.limit_value}"
     end
     
 
@@ -46,8 +51,12 @@ class StockOrdersController < ApplicationController
         if stock_order.total_price > buyer.wallet.balance
             redirect_to "/stocks", alert:"You don't have enough money in wallet."
         else
-            stock_order.update(bought_by: buyer,sold:true,sold_at: DateTime.now.utc)
-            redirect_to "/stocks", notice:"Stock bought successfully"
+            if stock_order.update(bought_by: buyer,sold:true,sold_at: DateTime.now.utc)
+                redirect_to "/stocks", notice:"Stock bought successfully"
+            else
+                puts "Stock Order Errors: #{stock_order.errors.to_a}"
+                redirect_to "/stocks", alert:"Stocks cannot be bought"
+            end
         end
     end
 

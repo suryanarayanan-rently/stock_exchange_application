@@ -4,7 +4,7 @@ module Api
         before_action :current_user
 
         def show_user_cards
-            cards = @current_user.cards.page(params[:page]).per 1
+            cards = @current_user.cards.page params[:page]
             render json: {:cards=> cards}
         end
 
