@@ -1,14 +1,15 @@
 <%= render  template:'stocks/buy_stock_details_model'%>
 <%= javascript_pack_tag 'modal_content_fill'%>
 
-<h1> List of Stocks</h1>
 <div class="container">
+<h1> List of Stocks</h1>
     <table class="table">
         <thead>
             <tr>
                 <th>Symbol</th>
                 <th>Name</th>
                 <th>No of shares</th>
+                <th>Unit Price</th>
                 <th>Price</th>
                 <th></th>
             <tr>
@@ -20,6 +21,7 @@
                     <td id="<%=ss%>Symbol"><%= sellorder.stock_symbol %></td>
                     <td id="<%=ss%>Name"><%= sellorder.stock.name %></td>
                     <td id="<%=ss%>Name"><%= sellorder.no_of_shares %></td>
+                    <td id="<%=ss%>Name"><%= sellorder.unit_price %></td>
                     <td id="<%=ss%>Price"><%= sellorder.total_price %></td>
                     <td>
                         <button type="button" class="btn btn-primary" id="<%=ss%>" data-bs-toggle="modal" data-bs-target="#buyStockModal">Buy</button>

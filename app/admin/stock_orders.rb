@@ -31,7 +31,7 @@ ActiveAdmin.register StockOrder do
       @stock_order.sold = params[:stock_order][:sold] == "1"
       @stock_order.unit_price = params[:stock_order][:unit_price].to_f
       @stock_order.no_of_shares = params[:stock_order][:no_of_shares].to_i
-      puts "\n price: #{@stock_order.no_of_shares} \n"
+      puts "\n no_of_shares: #{@stock_order.no_of_shares} \n"
       # build_resource
       @stock_order.save!
       # create!

@@ -30,9 +30,13 @@ module Api
         end
 
         def delete_card
-            card = Card.destroy(params[:id])
-            print " Delete Response: #{card}"
-            render json: {:card=>card, :message=>"Card Deletion Successful"}
+            begin
+                card = Card.destroy(params[:id])
+                print " Delete Response: #{card}"
+                render json: {:card=>card, :message=>"Card Deletion Successful"}
+            rescue ActiveRecord::RecordNotFound => exception
+                render json: {msg:"Resource not found"}, status:404 
+            end
         end
 
         def update_card
@@ -53,10 +57,10 @@ module Api
                 user_password = params[:card][:user][:password]
                 if @user.valid_password?(user_password) == false
                     @card.errors[:user_password] << "Invalid Password"
-                    return @card.errors
+                    render json:{errors:@card.errors},status:401 and return
                 else        
                     if @card.update(card_number: @card.card_number,card_holder_name:@card.card_holder_name,cvv:@card.cvv,expiry:@card.expiry) == false
-                        render json:{ "errors":@card.errors,"msg":"Cannot Update Card Details"}
+                        render json:{ "errors": @card.errors,"msg": "Cannot Update Card Details"}
                     else
                         render json:{:msg=> "Card updated successfully"}
                     end

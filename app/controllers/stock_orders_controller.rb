@@ -30,15 +30,15 @@ class StockOrdersController < ApplicationController
         total_price = units * unit_price
         stock_holding = StockHolding.find_by(username:current_user.username,stock_symbol:stock_symbol)
         @stock_order = StockOrder.new(sold_by: User.find(sold_by),total_price: total_price,stock_symbol: stock_symbol,no_of_shares: units, unit_price: unit_price)
-        if stock_holding == nil || stock_holding.no_of_shares < units
+        if stock_holding == nil || (stock_holding.no_of_shares-stock_holding.stocks_on_hold) < units
             flash.alert = "you can't sell stocks exceeding the no of units you hold"
             return render :sell_stock
         end
         if @stock_order.save 
-            flash.notice = "Stocks Bought Successefully";
+            flash.notice = "Sell order created successfully";
             redirect_to "/stocks"
         else
-            flash.alert = "Cannot Buy Stocks"
+            flash.alert = "Cannot sell stock"
             @stock_order = StockOrder.new(sold_by: User.find(sold_by),total_price: total_price,stock_symbol: stock_symbol,no_of_shares: units, unit_price: unit_price)
             render :sell_stock
         end

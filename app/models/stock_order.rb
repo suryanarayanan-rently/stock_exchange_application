@@ -71,11 +71,18 @@ class StockOrder < ApplicationRecord
                 print " No of shares #{self.no_of_shares}"
                 print " No of Seller shares #{seller_stock_holding.no_of_shares}"
 
-                us = seller_stock_holding.update(stocks_on_hold:  seller_stock_holding.stocks_on_hold - self.no_of_shares,no_of_shares: seller_stock_holding.no_of_shares - self.no_of_shares)
-                buyer_stock_holding.update(no_of_shares: buyer_stock_holding.no_of_shares + self.no_of_shares)
-                seller_wallet.update(balance: seller_wallet.balance + self.total_price)
-                buyer_wallet.update(balance: buyer_wallet.balance - self.total_price)
-                PriceMovement.create(stock_symbol:self.stock_symbol,price:self.unit_price,time:DateTime.now.utc)
+                # seller_stock_holding.stocks_on_hold = (seller_stock_holding.stocks_on_hold - self.no_of_shares).to_i
+                # seller_stock_holding.no_of_shares =  (seller_stock_holding.no_of_shares - self.no_of_shares).to_i
+                seller_stock_holding.valid?
+                
+                # seller_stock_holding.save!
+                us = seller_stock_holding.update!(stocks_on_hold:  (seller_stock_holding.stocks_on_hold - self.no_of_shares).to_i,no_of_shares: (seller_stock_holding.no_of_shares - self.no_of_shares).to_i)
+                puts "\n seller errors: #{seller_stock_holding.errors.to_a}"
+                buyer_stock_holding.update!(no_of_shares: (buyer_stock_holding.no_of_shares + self.no_of_shares).to_i)
+                puts "\n buyer errors: #{buyer_stock_holding.errors.to_a}"
+                seller_wallet.update!(balance: seller_wallet.balance + self.total_price)
+                buyer_wallet.update!(balance: buyer_wallet.balance - self.total_price)
+                PriceMovement.create!(stock_symbol:self.stock_symbol,price:self.unit_price,time:DateTime.now.utc)
             else
                 seller_stock_holding.update(stocks_on_hold:  seller_stock_holding.stocks_on_hold + self.no_of_shares,no_of_shares: seller_stock_holding.no_of_shares + self.no_of_shares)     
                 buyer_stock_holding.update(no_of_shares: buyer_stock_holding.no_of_shares - self.no_of_shares) 

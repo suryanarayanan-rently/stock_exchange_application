@@ -21,9 +21,9 @@ class Stock < ApplicationRecord
     def update_or_create_stock_holding
         stock_holding = StockHolding.find_by(username:self.created_by,stock_symbol:self.symbol)
         if stock_holding == nil
-            stock_holding=StockHolding.create!(username:self.created_by,stock_symbol: self.symbol, no_of_shares: self.no_of_shares)
+            stock_holding=StockHolding.create!(username:self.created_by,stock_symbol: self.symbol, no_of_shares: self.no_of_shares.to_i)
         else
-            stock_holding.update(stock_symbol: self.symbol, no_of_shares: self.no_of_shares)
+            stock_holding.update(stock_symbol: self.symbol, no_of_shares: self.no_of_shares.to_i)
         end
     end
 
