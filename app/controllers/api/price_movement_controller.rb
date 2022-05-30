@@ -1,9 +1,14 @@
 module Api
     class PriceMovementController < Api::ApplicationController 
         def show_stock_price_movements
-            @price_movements = PriceMovement.find_by(stock_symbol:params[:stock_symbol]).page params[:page]
-            # print "Current user: #{@current_user}"
-            render json: {price_movemnts:@price_movements}
+            stock_symbol = params[:stock_symbol]
+            pm = PriceMovement.find_by(stock_symbol:stock_symbol)
+            if pm != nil
+                @price_movements = pm.page params[:page]
+                render json: {price_movements:@price_movements}
+            else
+                render json: {price_movements:[]}
+            end
         end
     end 
 end

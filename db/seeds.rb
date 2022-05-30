@@ -8,8 +8,7 @@ require_relative "stock_seed.rb"
 #   Character.create(name: 'Luke', movie: movies.first)
 puts "Started Seeding User data"
 AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
-User.create!(username:"admin@example.com",email: 'admin@example.comple', password:"password",password_confirmation:"password",name: "Admin", mobile:"8428169669")
-Wallet.create!(username:"admin@example.com",balance:0.00)
+# User.create!(email:"admin@example.com",password:"password",password_confirmation: "password",username:"admin@wxampl")
 puts "User data seeding completed"
 seed_stock_data
 

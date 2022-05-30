@@ -13,7 +13,6 @@ class PanCardController < ApplicationController
         @user = User.find(current_user.username)
         begin
             @pan_card = PanCard.create!(pan_no:params["pan_card"]["pan_no"],user: @user)
-            @user.create_wallet!(balance: 100.0)
             redirect_to "/stocks"    
         rescue => exception
             print "Exception Occured"

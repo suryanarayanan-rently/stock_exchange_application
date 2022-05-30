@@ -1,3 +1,4 @@
+require_relative "utils.rb"
 class WalletController < ApplicationController
     before_action :require_login,:check_pan_card
 

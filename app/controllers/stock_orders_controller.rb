@@ -59,8 +59,4 @@ class StockOrdersController < ApplicationController
             end
         end
     end
-
-    
-
-
 end

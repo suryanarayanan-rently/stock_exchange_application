@@ -3,13 +3,13 @@ RSpec.describe PanCard, :type => :model do
     
 
     before(:all) do
-        @user = User.create!(username:"admin@example.com",email: 'admin@example.comple', password:"password",password_confirmation:"password",name: "Admin", mobile:"8428169669")
+        @user = create(:user)
     end
 
     subject {
         described_class.new(
             pan_no: "TESTPAN89R",
-            username: "admin@example.com"
+            username: @user.username
         )
     }
     it "is valid with required attributes" do 
@@ -27,7 +27,12 @@ RSpec.describe PanCard, :type => :model do
     end
 
     it "should belong to a user" do
-        expect(should belong_to(:user))
+        should belong_to(:user)
+    end
+
+    it "creates a wallet after save" do
+        subject.save!
+        expect(subject.user.wallet).to_not eq(nil)
     end
 
     after(:all) do

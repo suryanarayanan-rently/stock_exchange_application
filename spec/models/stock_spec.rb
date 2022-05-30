@@ -3,8 +3,11 @@ RSpec.describe Stock, type: :model do
 
     before (:each) do
         @admin = create :admin_user 
-        @user = create :user, username: @admin.email, name:"admin", mobile: 1234567890, password: @admin.password, password_confirmation: @admin.password
     end
+
+    subject {
+        create(:stock)
+    }
         
 
     it "is created with valid atttributes" do 
@@ -59,5 +62,29 @@ RSpec.describe Stock, type: :model do
         stock = build :stock, created_by: @admin.email
         should have_many(:price_movements)
     end
+
+    it "update or create stock hodling after create" do
+        expect(subject.stock_holding.count).to be >= 0 
+    end
+    
+    it "updates wallet balance after destroy" do
+        stock = create(:stock)
+        stock.current_price = 5
+        stock.save!
+        stock.stock_holding[0].no_of_shares = 10
+        stock.stock_holding[0].save!
+        user = User.find(stock.created_by)
+        puts "username: #{user.email}"
+        puts " wallet: #{user.wallet.balance}"
+        puts "stock_holdingL #{user.stock_holding[0].no_of_shares}"
+        puts "current_price: #{stock.current_price}"
+        puts "stock_hloding: #{StockHolding.where(stock_symbol:stock.symbol,username:stock.created_by).to_a}"
+        balance = user.wallet.balance
+        stock.destroy!
+        expect(user.wallet.reload.balance).to eq(balance + (5 * 10))
+    end
+
+    
+
 
 end

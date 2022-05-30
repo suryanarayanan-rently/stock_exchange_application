@@ -2,7 +2,6 @@ require "rails_helper";
 RSpec.describe PriceMovement, :type => :model do
     subject {
         admin = create(:admin_user)
-        user = create(:user,username:admin.email,email:admin.email)
         stock = create(:stock,created_by: admin.email)
         described_class.new(stock_symbol: stock.symbol,price: 100 ,time: Time.now.utc)
     }

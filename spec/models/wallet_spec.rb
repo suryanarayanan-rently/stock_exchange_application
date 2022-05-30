@@ -24,6 +24,5 @@ RSpec.describe Wallet, type: :model do
     it "should belong to one user" do
         wallet = build :wallet, balance: 100, username: @user.username 
         should belong_to(:user)
-        have_many_attached(:user)
     end
 end

@@ -20,7 +20,7 @@ class StockOrder < ApplicationRecord
     validate :cannot_sell_stock_more_than_holding, on: :create
     validate :buyer_and_seller_should_not_be_same
     
-    belongs_to :sold_by, class_name:"User", foreign_key: :sold_by
+    belongs_to :sold_by, class_name:"User", foreign_key: :sold_by, primary_key: :username
     belongs_to :bought_by, class_name:"User", foreign_key: :bought_by, required: false
     belongs_to :stock, foreign_key: :stock_symbol, primary_key: :symbol
     
@@ -36,7 +36,7 @@ class StockOrder < ApplicationRecord
     end
 
     def cannot_sell_stock_more_than_holding
-        stock_holding = StockHolding.find_by(username: sold_by.username, stock_symbol:stock_symbol)
+        stock_holding = StockHolding.find_by(username: self.sold_by.username, stock_symbol:stock_symbol)
         if stock_holding == nil 
             errors.add(:stock_symbol, "You can sell only the stocks you hold")
         else
@@ -90,7 +90,6 @@ class StockOrder < ApplicationRecord
         if !self.sold
             stock_holding.update(stocks_on_hold: stock_holding.stocks_on_hold - self.no_of_shares)
         end
-
     end
 
     

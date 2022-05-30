@@ -33,7 +33,7 @@ module Api
                 end    
             rescue ActiveRecord::RecordNotFound => exception
                 print exception 
-                return render json: {error: "Card Not Found"}
+                return render json: {error: "Card Not Found"},status:400
             end
             
         end              

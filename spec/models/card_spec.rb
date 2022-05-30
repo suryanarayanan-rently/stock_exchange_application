@@ -14,12 +14,12 @@ RSpec.describe Card , :type => :model do
     end
 
     it "is invalid if card_number is less than 16" do
-        subject.card_number = 133
+        subject.card_number = Faker::Number.number(digits:3)
         expect(subject).to_not be_valid 
     end
 
     it "is invalid if card_number is greater than 16" do
-        subject.card_number = 8789897897987987897897987987987987
+        subject.card_number = Faker::Number.number(digits: 18)
         expect(subject).to_not be_valid
     end
 
@@ -52,5 +52,19 @@ RSpec.describe Card , :type => :model do
     it "is invalid if cvv has more than 4 digits" do
         subject.cvv=98762
         expect(subject).to_not be_valid
+    end
+
+    it "should have many user cards" do 
+        should have_many(:user_cards)
+    end
+    
+    it "should have many users" do 
+        should have_many(:users)
+    end
+
+    it "should destroy user card after delete" do 
+        id = subject.id
+        subject.destroy
+        expect(UserCard.find_by_card_id(id)).to be(nil)
     end
 end

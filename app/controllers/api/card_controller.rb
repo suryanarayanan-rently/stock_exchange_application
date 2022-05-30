@@ -5,7 +5,8 @@ module Api
 
         def show_user_cards
             cards = @current_user.cards.page params[:page]
-            render json: {:cards=> cards}
+            
+            render json: {:cards=> cards,status:true}
         end
 
         def save_card
@@ -40,7 +41,7 @@ module Api
                 @card.card_number = params[:card][:card_number]
                 @card.card_holder_name = params[:card][:card_holder_name] 
                 expiry = params[:card][:expiry]
-                if expiry != ""
+                if !expiry.blank? || expiry != nil
                     @card.expiry = Date.parse(expiry[2..-1])
                 end 
                 cvv = params[:card][:cvv] 

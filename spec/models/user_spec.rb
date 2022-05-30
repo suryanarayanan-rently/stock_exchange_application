@@ -42,6 +42,26 @@ RSpec.describe User, :type => :model do
         @user = User.create!(name:"surya",username:"pinkyponky",mobile:"8428169669",email:"pinkyponky@pk.com",password:"Pinkponky24",password_confirmation: "Pinkponky24")
         expect(User.new(name:"surya",username:"pinkyponky",mobile:"8428169669",email:"pinkyponky1@pk.com",password:"Pinkponky24",password_confirmation: "Pinkponky24")).to_not be_valid
     end
+   
+    it "has one pan card" do
+        should have_one(:pan_card)
+    end
+
+    it "has one wallet" do 
+        should have_one(:wallet)
+    end
+
+    it "has many stock_holdings" do 
+        should have_many(:stock_holding)
+    end
+
+    it "has many user_cards" do 
+        should have_many(:user_cards)
+    end
+
+    it "has many cards" do 
+        should have_many(:cards)
+    end
 
     
 end
